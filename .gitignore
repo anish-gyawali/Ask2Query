@@ -18,8 +18,8 @@ venv/
 # Model outputs
 models/
 outputs/
-models/base_model/model.safetensors
-models/fine_tuned_model/model.safetensors
+models/base_model/
+models/fine_tuned_model/
 
 
 # Dataset (optional if sensitive or very big)
