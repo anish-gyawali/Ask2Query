@@ -1,0 +1,39 @@
+# Python
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+
+# Environments
+.venv/
+env/
+venv/
+
+# Jupyter Notebooks (if any)
+.ipynb_checkpoints
+
+# OS Files
+.DS_Store
+.idea/
+# Model outputs
+models/
+outputs/
+models/base_model/model.safetensors
+models/fine_tuned_model/model.safetensors
+
+
+# Dataset (optional if sensitive or very big)
+data/wikisql/
+data/train_real.json
+data/val_real.json
+
+# Logs
+*.log
+
+# Huggingface cache (optional)
+.cache/
+huggingface/
+
+# Misc
+*.safetensors
+*.bin
