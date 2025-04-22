@@ -31,11 +31,11 @@ class TextToSQLDataset(Dataset):
 
     def match_template(self, sql_query):
         sql_query = sql_query.lower()
-        if "name" in sql_query:
-            return "SELECT name FROM employees WHERE id = {id}"
-        elif "salary" in sql_query:
-            return "SELECT salary FROM employees WHERE id = {id}"
-        elif "department" in sql_query:
-            return "SELECT department FROM employees WHERE id = {id}"
+        if sql_query.startswith("insert into"):
+            return "INSERT INTO table (columns) VALUES (values)"
+        elif sql_query.startswith("delete from"):
+            return "DELETE FROM table WHERE condition"
+        elif sql_query.startswith("select"):
+            return "SELECT column FROM table WHERE condition"
         else:
             return None

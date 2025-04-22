@@ -1,22 +1,25 @@
-from datasets import load_dataset
 import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from datasets import load_dataset
+import config
 
-# Create directory for saving the dataset
-os.makedirs("spider_dataset", exist_ok=True)
+# Create directory
+os.makedirs(config.RAW_DATA_DIR, exist_ok=True)
 
-# Load the Spider dataset from the xlangai repository
-spider_dataset = load_dataset("xlangai/spider")
+# Load the dataset dynamically
+if config.DATASET_NAME == "spider":
+    dataset = load_dataset("xlangai/spider")
+elif config.DATASET_NAME == "gretel":
+    dataset = load_dataset("gretelai/synthetic_text_to_sql")
+else:
+    raise ValueError("Unsupported dataset name!")
 
-# Save the dataset to disk in Parquet format (efficient storage)
-spider_dataset.save_to_disk("spider_dataset")
+# Save
+dataset.save_to_disk(config.RAW_DATA_DIR)
 
-# Optionally, you can also save it in other formats
-# For example, to CSV files:
-for split in spider_dataset.keys():
-    spider_dataset[split].to_csv(f"spider_dataset/{split}.csv")
+# Save CSV and JSON
+for split in dataset.keys():
+    dataset[split].to_json(f"{config.RAW_DATA_DIR}/{split}.json")
 
-# Or to JSON files:
-for split in spider_dataset.keys():
-    spider_dataset[split].to_json(f"spider_dataset/{split}.json")
-
-print("Dataset downloaded and saved successfully!")
+print(f"Dataset {config.DATASET_NAME} downloaded and saved successfully!")

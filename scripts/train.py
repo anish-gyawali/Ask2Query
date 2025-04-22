@@ -14,10 +14,10 @@ def train():
     model = DistilBertForSequenceClassification.from_pretrained(config.MODEL_NAME, num_labels=config.NUM_LABELS, ignore_mismatched_sizes=True)
 
     train_dataset = TextToSQLDataset(config.TRAIN_FILE, tokenizer)
-    val_dataset = TextToSQLDataset(config.VAL_FILE, tokenizer)
+   # val_dataset = TextToSQLDataset(config.VAL_FILE, tokenizer)
 
     train_loader = DataLoader(train_dataset, batch_size=config.BATCH_SIZE, shuffle=True)
-    val_loader = DataLoader(val_dataset, batch_size=config.BATCH_SIZE)
+   # val_loader = DataLoader(val_dataset, batch_size=config.BATCH_SIZE)
 
     optimizer = AdamW(model.parameters(), lr=config.LEARNING_RATE)
 

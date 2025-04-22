@@ -2,9 +2,10 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import json
+import config
 
-def prepare_spider():
-    os.makedirs("data/spider_filtered", exist_ok=True)
+def prepare_dataset():
+    os.makedirs(config.FILTERED_DATA_DIR, exist_ok=True)
 
     def filter_data(input_path, output_path):
         data = []
@@ -15,20 +16,30 @@ def prepare_spider():
 
         filtered = []
         for example in data:
-            sql = example['query'].lower()
+            question = example.get('sql_prompt', "").strip()
+            sql = example.get('sql', "").strip()
 
-            # Keep only simple SELECT, INSERT, DELETE queries, no JOIN, no nested SELECT
-            if ("join" not in sql) and ("select" in sql or "insert" in sql or "delete" in sql):
+            if not question or not sql:
+                continue
+
+            sql_lower = sql.lower()
+
+            # Keep only SELECT, INSERT, DELETE
+            if ("select" in sql_lower or "insert" in sql_lower or "delete" in sql_lower):
+                # Remove "SQL:" if it exists
+                if sql_lower.startswith("sql:"):
+                    sql = sql[4:].strip()
+
                 filtered.append({
-                    "question": example['question'],
-                    "sql": example['query']
+                    "question": question,
+                    "sql": sql
                 })
 
         with open(output_path, 'w') as f:
             json.dump(filtered, f, indent=2)
 
-    filter_data('spider_dataset/train.json', 'data/spider_filtered/train_spider_filtered.json')
-    filter_data('spider_dataset/validation.json', 'data/spider_filtered/val_spider_filtered.json')
+    filter_data(f"{config.RAW_DATA_DIR}/train.json", f"{config.FILTERED_DATA_DIR}/train_{config.DATASET_NAME}_filtered.json")
+    filter_data(f"{config.RAW_DATA_DIR}/test.json", f"{config.FILTERED_DATA_DIR}/test_{config.DATASET_NAME}_filtered.json")
 
 if __name__ == "__main__":
-    prepare_spider()
+    prepare_dataset()

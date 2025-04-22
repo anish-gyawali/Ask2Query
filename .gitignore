@@ -17,12 +17,20 @@ venv/
 .idea/
 # Model outputs
 models/
-outputs/
 models/base_model/
 models/fine_tuned_model/
+spider_dataset/
+spider_dataset/train
+spider_dataset/validation
+gretel_dataset/
+gretel_dataset/test/
+gretel_dataset/train/
 
 
-# Dataset (optional if sensitive or very big)
+# Dataset
+data/
+data/gretel_filtered/
+data/gretel_filtered_small/
 data/wikisql/
 data/train_real.json
 data/val_real.json
