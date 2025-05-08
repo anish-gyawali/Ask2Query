@@ -5,7 +5,7 @@ DATASET_NAME = "gretel"
 MODEL_NAME = "distilbert-base-uncased-finetuned-sst-2-english"
 MAX_LENGTH = 64
 BATCH_SIZE = 16
-EPOCHS = 3
+EPOCHS = 2
 LEARNING_RATE = 2e-5
 
 # Data paths (automatically based on DATASET_NAME)
@@ -13,9 +13,13 @@ RAW_DATA_DIR = f"{DATASET_NAME}_dataset"
 FILTERED_DATA_DIR = f"data/{DATASET_NAME}_filtered"
 SMALL_DATA_DIR = f"data/{DATASET_NAME}_filtered_small"
 
-# Files
-TRAIN_FILE = f"{SMALL_DATA_DIR}/train_{DATASET_NAME}_filtered_small.json"
-VAL_FILE = f"{SMALL_DATA_DIR}/test_{DATASET_NAME}_filtered_small.json"
+# Files (small )
+#TRAIN_FILE = f"{SMALL_DATA_DIR}/train_{DATASET_NAME}_filtered_small.json"
+#VAL_FILE = f"{SMALL_DATA_DIR}/test_{DATASET_NAME}_filtered_small.json"
+
+#Files (large)
+TRAIN_FILE = f"{FILTERED_DATA_DIR}/train_{DATASET_NAME}_filtered.json"
+VAL_FILE = f"{FILTERED_DATA_DIR}/test_{DATASET_NAME}_filtered.json"
 
 # Labels/Templates (you can update later)
 LABEL_TO_TEMPLATE = {

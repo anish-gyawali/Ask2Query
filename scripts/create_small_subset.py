@@ -20,9 +20,9 @@ def create_small_subset():
     delete_examples = [ex for ex in train_data if ex['sql'].lower().startswith("delete from")]
 
     # Sample
-    small_train_select = random.sample(select_examples, min(300, len(select_examples)))
-    small_train_insert = random.choices(insert_examples, k=50) if len(insert_examples) > 0 else []
-    small_train_delete = random.choices(delete_examples, k=50) if len(delete_examples) > 0 else []
+    small_train_select = random.sample(select_examples, min(380, len(select_examples)))
+    small_train_insert = random.choices(insert_examples, k=10) if len(insert_examples) > 0 else []
+    small_train_delete = random.choices(delete_examples, k=10) if len(delete_examples) > 0 else []
 
     small_train = small_train_select + small_train_insert + small_train_delete
     random.shuffle(small_train)

@@ -6,7 +6,7 @@ from torch.utils.data import DataLoader
 from transformers import DistilBertForSequenceClassification, DistilBertTokenizerFast
 import config
 from scripts.dataset import TextToSQLDataset
-from scripts.utils import compute_metrics, plot_confusion_matrix
+from scripts.utils import compute_metrics, plot_confusion_matrix, plot_model_performance
 
 def evaluate(model_path, output_image, model_name):
     print(f"\nEvaluating {model_name} Model...")
@@ -26,9 +26,17 @@ def evaluate(model_path, output_image, model_name):
             preds += outputs.logits.argmax(dim=1).tolist()
             labels += batch['labels'].tolist()
 
-    compute_metrics(labels, preds)
+    accuracy, f1, _ = compute_metrics(labels, preds)
     plot_confusion_matrix(labels, preds, output_image)
 
+    return accuracy, f1
+
 if __name__ == "__main__":
-    evaluate(config.OUTPUT_DIR_BASE, "outputs/confusion_matrix_base.png", "Base")
-    evaluate(config.OUTPUT_DIR_FINETUNED, "outputs/confusion_matrix_finetuned.png", "Fine-tuned")
+    base_metrics = evaluate(config.OUTPUT_DIR_BASE, "outputs/confusion_matrix_base.png", "Base")
+    finetuned_metrics = evaluate(config.OUTPUT_DIR_FINETUNED, "outputs/confusion_matrix_finetuned.png", "Fine-tuned")
+
+    # Plot model performance comparison
+    os.makedirs("outputs", exist_ok=True)
+    plot_model_performance(base_metrics, finetuned_metrics, "outputs/model_performance_comparison.png")
+
+    print("\nEvaluation completed successfully!")
